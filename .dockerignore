@@ -1,0 +1,13 @@
+.git
+.gitignore
+.gitattributes
+README.md
+*.md
+terraform/
+.github/
+.DS_Store
+Thumbs.db
+*.pem
+contact.db
+terraform.tfvars
+*.tfvars

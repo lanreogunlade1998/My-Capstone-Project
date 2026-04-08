@@ -1,0 +1,22 @@
+# Sensitive Terraform files
+terraform/terraform.tfvars
+*.tfvars
+*.pem
+*.key
+
+# Database files
+contact.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Terraform temporary files
+.terraform/
+.terraform.lock.hcl
+
+# Logs
+*.log
+
+# Local environment
+.env
