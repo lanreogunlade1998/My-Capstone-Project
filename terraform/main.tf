@@ -1,6 +1,9 @@
 terraform {
   required_providers {
-    aws = { source = "hashicorp/aws", version = "~> 5.0" }
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
 
@@ -12,27 +15,45 @@ provider "aws" {
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
-  tags = { Name = "sprevonix-vpc" }
+  tags = {
+    Name = "sprevonix-vpc"
+  }
 }
 
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "${var.aws_region}a"   # us-east-1a
-  tags = { Name = "sprevonix-public-subnet" }
+  availability_zone       = "${var.aws_region}a"
+  tags = {
+    Name = "sprevonix-public-subnet"
+  }
 }
 
+# --- TWO private subnets (required for RDS) ---
 resource "aws_subnet" "private1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "${var.aws_region}a"   # us-east-1a
-  tags = { Name = "sprevonix-private-subnet-1" }
+  availability_zone = "${var.aws_region}a"
+  tags = {
+    Name = "sprevonix-private-subnet-1"
+  }
+}
+
+resource "aws_subnet" "private2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "${var.aws_region}b"
+  tags = {
+    Name = "sprevonix-private-subnet-2"
+  }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
-  tags   = { Name = "sprevonix-igw" }
+  tags = {
+    Name = "sprevonix-igw"
+  }
 }
 
 resource "aws_route_table" "public" {
@@ -53,12 +74,37 @@ resource "aws_security_group" "web" {
   name   = "sprevonix-web-sg"
   vpc_id = aws_vpc.main.id
 
-  ingress { from_port = 80;   to_port = 80;   protocol = "tcp"; cidr_blocks = ["0.0.0.0/0"] }
-  ingress { from_port = 443;  to_port = 443;  protocol = "tcp"; cidr_blocks = ["0.0.0.0/0"] }
-  ingress { from_port = 22;   to_port = 22;   protocol = "tcp"; cidr_blocks = ["0.0.0.0/0"] }
-  egress  { from_port = 0;    to_port = 0;    protocol = "-1";  cidr_blocks = ["0.0.0.0/0"] }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-  tags = { Name = "sprevonix-web-sg" }
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sprevonix-web-sg"
+  }
 }
 
 resource "aws_security_group" "rds" {
@@ -72,15 +118,25 @@ resource "aws_security_group" "rds" {
     security_groups = [aws_security_group.web.id]
   }
 
-  egress { from_port = 0; to_port = 0; protocol = "-1"; cidr_blocks = ["0.0.0.0/0"] }
-  tags = { Name = "sprevonix-rds-sg" }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sprevonix-rds-sg"
+  }
 }
 
-# --- RDS MySQL ---
+# --- RDS MySQL (updated with both private subnets) ---
 resource "aws_db_subnet_group" "main" {
   name       = "sprevonix-db-subnet"
-  subnet_ids = [aws_subnet.private1.id]
-  tags       = { Name = "sprevonix-db-subnet" }
+  subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id]  # Now has 2 subnets!
+  tags = {
+    Name = "sprevonix-db-subnet"
+  }
 }
 
 resource "aws_db_instance" "main" {
@@ -98,13 +154,16 @@ resource "aws_db_instance" "main" {
   skip_final_snapshot  = true
   publicly_accessible  = false
 
-  tags = { Name = "sprevonix-rds" }
+  tags = {
+    Name = "sprevonix-rds"
+  }
 }
 
 # --- EC2 Instance ---
 resource "aws_instance" "web" {
   ami                    = var.ami_id
   instance_type          = "t3.micro"
+  key_name               = "github-actions-key"
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.web.id]
   user_data              = templatefile("${path.module}/user_data.sh", {
@@ -113,5 +172,7 @@ resource "aws_instance" "web" {
     DB_NAME = aws_db_instance.main.db_name
     DB_PASS = var.db_password
   })
-  tags = { Name = "sprevonix-web" }
+  tags = {
+    Name = "sprevonix-web"
+  }
 }
