@@ -41,10 +41,10 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull ghcr.io/lanreogunlade1998/sprevonix:latest
-            docker stop sprevonix || true
-            docker rm sprevonix || true
-            docker run -d --name sprevonix \
+            sudo docker pull ghcr.io/lanreogunlade1998/sprevonix:latest
+            sudo docker stop sprevonix || true
+            sudo docker rm sprevonix || true
+            sudo docker run -d --name sprevonix \
               -p 80:80 \
               -e DB_HOST="${{ secrets.DB_HOST }}" \
               -e DB_NAME="sprevonix" \
