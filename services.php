@@ -29,7 +29,7 @@
     <section class="page-hero compact">
       <div class="container">
         <span class="eyebrow">Services</span>
-        <h1>Specialized offerings for modern digital organizations.</h1>
+        <h1>Specialized Offerings for modern digital organizations.</h1>
         <p class="lead">Our service portfolio reflects the capstone brief: consulting, delivery, automation, and enablement.</p>
       </div>
     </section>

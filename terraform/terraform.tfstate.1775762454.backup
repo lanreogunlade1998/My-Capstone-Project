@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.14.7",
-  "serial": 40,
+  "serial": 37,
   "lineage": "34c09dfc-d6a5-eaa6-eb8e-99a58f15545c",
   "outputs": {
     "cloudwatch_dashboard_url": {
@@ -9,7 +9,7 @@
       "type": "string"
     },
     "instance_public_ip": {
-      "value": null,
+      "value": "3.92.61.228",
       "type": "string"
     },
     "rds_endpoint": {
@@ -477,80 +477,6 @@
     {
       "mode": "managed",
       "type": "aws_security_group",
-      "name": "rds",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 1,
-          "attributes": {
-            "arn": "arn:aws:ec2:us-east-1:654654452789:security-group/sg-052e81bfa344d3c97",
-            "description": "Managed by Terraform",
-            "egress": [
-              {
-                "cidr_blocks": [
-                  "0.0.0.0/0"
-                ],
-                "description": "",
-                "from_port": 0,
-                "ipv6_cidr_blocks": [],
-                "prefix_list_ids": [],
-                "protocol": "-1",
-                "security_groups": [],
-                "self": false,
-                "to_port": 0
-              }
-            ],
-            "id": "sg-052e81bfa344d3c97",
-            "ingress": [
-              {
-                "cidr_blocks": [
-                  "24.66.134.245/32"
-                ],
-                "description": "MySQL Workbench from Home",
-                "from_port": 3306,
-                "ipv6_cidr_blocks": [],
-                "prefix_list_ids": [],
-                "protocol": "tcp",
-                "security_groups": [],
-                "self": false,
-                "to_port": 3306
-              },
-              {
-                "cidr_blocks": [],
-                "description": "",
-                "from_port": 3306,
-                "ipv6_cidr_blocks": [],
-                "prefix_list_ids": [],
-                "protocol": "tcp",
-                "security_groups": [
-                  "sg-0cf56a11073d65e56"
-                ],
-                "self": false,
-                "to_port": 3306
-              }
-            ],
-            "name": "sprevonix-rds-sg",
-            "name_prefix": "",
-            "owner_id": "654654452789",
-            "revoke_rules_on_delete": null,
-            "tags": {
-              "Name": "sprevonix-rds-sg"
-            },
-            "tags_all": {
-              "Name": "sprevonix-rds-sg"
-            },
-            "timeouts": null,
-            "vpc_id": "vpc-08f8da21e85a6993e"
-          },
-          "sensitive_attributes": [],
-          "identity_schema_version": 0,
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0="
-        }
-      ]
-    },
-    {
-      "mode": "managed",
-      "type": "aws_security_group",
       "name": "web",
       "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
       "instances": [
@@ -619,7 +545,7 @@
             "name": "sprevonix-web-sg",
             "name_prefix": "",
             "owner_id": "654654452789",
-            "revoke_rules_on_delete": null,
+            "revoke_rules_on_delete": false,
             "tags": {
               "Name": "sprevonix-web-sg"
             },
@@ -631,7 +557,10 @@
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0="
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_vpc.main"
+          ]
         }
       ]
     },

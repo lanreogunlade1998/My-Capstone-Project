@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.14.7",
-  "serial": 40,
+  "serial": 36,
   "lineage": "34c09dfc-d6a5-eaa6-eb8e-99a58f15545c",
   "outputs": {
     "cloudwatch_dashboard_url": {
@@ -9,7 +9,7 @@
       "type": "string"
     },
     "instance_public_ip": {
-      "value": null,
+      "value": "3.92.61.228",
       "type": "string"
     },
     "rds_endpoint": {
@@ -532,7 +532,7 @@
             "name": "sprevonix-rds-sg",
             "name_prefix": "",
             "owner_id": "654654452789",
-            "revoke_rules_on_delete": null,
+            "revoke_rules_on_delete": false,
             "tags": {
               "Name": "sprevonix-rds-sg"
             },
@@ -544,7 +544,11 @@
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0="
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_security_group.web",
+            "aws_vpc.main"
+          ]
         }
       ]
     },
@@ -619,7 +623,7 @@
             "name": "sprevonix-web-sg",
             "name_prefix": "",
             "owner_id": "654654452789",
-            "revoke_rules_on_delete": null,
+            "revoke_rules_on_delete": false,
             "tags": {
               "Name": "sprevonix-web-sg"
             },
@@ -631,7 +635,10 @@
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
-          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0="
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_vpc.main"
+          ]
         }
       ]
     },
